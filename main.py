@@ -7,6 +7,19 @@ class Telas:
         self.telaEsqSenha()
         self.telaEsqSenhaCodigo()
         self.telaEsqSenhaNova()
+        self.telaLogo()
+
+    def telaLogo(self):
+        self.tela = Tk()
+        self.tela.geometry("1280x720")
+        self.tela['bg'] = "#cfcbcb"
+        self.tela.title("IterMobi")
+        img = PhotoImage(file="triangulos_appMotorista.png")
+
+        lblTri = Label(self.tela, image=img, bg="#cfcbcb")
+        lblTri.place(x=-2,y=-1)
+
+        #TERMINAR CONFIGURAÇÃO DAS TELAS
 
     def telaCriaConta(self):
         self.criaConta = Tk()
