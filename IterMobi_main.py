@@ -64,12 +64,12 @@ class TelaCadastroLogin:
         self.entryEmail.place(width=270,height=50,relx = 0.14, rely= 0.40)
         self.entrySenha = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
         self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.55)
+        self.entrySenha.config(show='*')
         self.entryConfSenha = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
         self.entryConfSenha.place(width=270,height=50,relx = 0.14, rely= 0.70)
-
-        self.botaoConfirma = Button(self.criaConta, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd")
+        self.entryConfSenha.config(show='*')
+        self.botaoConfirma = Button(self.criaConta, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=self.mostraSenha)
         self.botaoConfirma.place(width=270,height=50,relx = 0.14, rely= 0.80)
-
         self.btnCadastro = Label(self.criaConta, text="JÁ TEM CADASTRO? CLIQUE AQUI", font="Arial 10 bold", bg="#cfcbcb", fg = "#000", relief = FLAT)
         self.btnCadastro.place(width=270,height=50,relx = 0.14, rely= 0.90)
         self.btnCadastro.bind('<Button-1>', self.telaConectar)
