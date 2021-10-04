@@ -28,85 +28,84 @@ class TelaCadastroLogin:
         self.__senha = __senha
         self.deficienciaVisual = deficienciaVisual
 
-        self.criaConta = Tk()
-        self.criaConta.geometry("375x677")
-        self.criaConta['bg'] = "#cfcbcb"
-        self.criaConta.title("IterMobi")
+        self.tela = Tk()
+        self.tela.geometry("375x677")
+        self.tela['bg'] = "#cfcbcb"
+        self.tela.title("IterMobi")
         self.img1 = PhotoImage(file="triangulos_app.png")
         self.img2 = PhotoImage(file="logoProjGrande.png")
 
-        self.lblLogo = Label(self.criaConta, image=self.img2, bg="#cfcbcb")        
+        self.lblLogo = Label(self.tela, image=self.img2, bg="#cfcbcb")        
         self.lblLogo.place(relx=0.25, rely=0.4)
         t = Timer(2, self.cadastrar)
         t.start()
-        self.criaConta.mainloop()
+        self.tela.mainloop()
  
     def cadastrar(self):
         self.lblLogo.destroy()
         
-        self.lblTri = Label(self.criaConta, image=self.img1, bg="#cfcbcb")        
+        self.lblTri = Label(self.tela, image=self.img1, bg="#cfcbcb")        
         self.lblTri.place(relx=0, rely=0)
 
-        self.mainLbl = Label(self.criaConta, text="CRIE SUA CONTA", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
+        self.mainLbl = Label(self.tela, text="CRIE SUA CONTA", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
         self.mainLbl.place(relx = 0.14,rely=0.1)
-        self.lblNome = Label(self.criaConta, text="NOME", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
+        self.lblNome = Label(self.tela, text="NOME", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
         self.lblNome.place(relx = 0.14, rely= 0.2)
-        self.lblEmail = Label(self.criaConta, text="EMAIL", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
+        self.lblEmail = Label(self.tela, text="EMAIL", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
         self.lblEmail.place(relx = 0.14, rely= 0.35)
-        self.lblSenha = Label(self.criaConta, text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
+        self.lblSenha = Label(self.tela, text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
         self.lblSenha.place(relx = 0.14, rely= 0.5)
-        self.lblConfSenha = Label(self.criaConta, text="CONFIRMAR SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
+        self.lblConfSenha = Label(self.tela, text="CONFIRMAR SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
         self.lblConfSenha.place(relx = 0.14, rely= 0.65)
 
-        self.entryNome = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
+        self.entryNome = Entry(self.tela, relief = FLAT, font= "Helvetica 11")
         self.entryNome.place(width=270,height=50,relx = 0.14, rely= 0.25)
-        self.entryEmail = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
+        self.entryEmail = Entry(self.tela, relief = FLAT, font= "Helvetica 11")
         self.entryEmail.place(width=270,height=50,relx = 0.14, rely= 0.40)
-        self.entrySenha = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
+        self.entrySenha = Entry(self.tela, relief = FLAT, font= "Helvetica 11")
         self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.55)
         self.entrySenha.config(show='*')
-        self.entryConfSenha = Entry(self.criaConta, relief = FLAT, font= "Helvetica 11")
+        self.entryConfSenha = Entry(self.tela, relief = FLAT, font= "Helvetica 11")
         self.entryConfSenha.place(width=270,height=50,relx = 0.14, rely= 0.70)
         self.entryConfSenha.config(show='*')
-        self.botaoConfirma = Button(self.criaConta, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=self.mostraSenha)
+        self.botaoConfirma = Button(self.tela, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=self.mostraSenha)
         self.botaoConfirma.place(width=270,height=50,relx = 0.14, rely= 0.80)
-        self.btnCadastro = Label(self.criaConta, text="JÁ TEM CADASTRO? CLIQUE AQUI", font="Arial 10 bold", bg="#cfcbcb", fg = "#000", relief = FLAT)
+        self.btnCadastro = Label(self.tela, text="JÁ TEM CADASTRO? CLIQUE AQUI", font="Arial 10 bold", bg="#cfcbcb", fg = "#000", relief = FLAT)
         self.btnCadastro.place(width=270,height=50,relx = 0.14, rely= 0.90)
         self.btnCadastro.bind('<Button-1>', self.telaConectar)
 
+
+    def mostraSenha(self):
         self.nomeUsuario = self.entryNome.get()
         self.emailUsuario = self.entryEmail.get()
         self.senha = self.entrySenha.get()
 
-    def telaConectar(self, event):
-        self.conectar = Tk()
-        self.conectar.geometry("375x677")
-        self.conectar['bg'] = "#cfcbcb"
-        self.conectar.title("IterMobi")
-        self.triangulosImg = PhotoImage(file="triangulos_app.png")
-         
-        self.lblTri = Label(self.conectar, image=self.triangulosImg)
-        self.lblTri.pack()
 
-        self.mainLbl = Label(self.conectar, text="CONECTAR", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
+    def telaConectar(self, event): 
+        self.lblNome.destroy()
+        self.lblConfSenha.destroy()
+        self.entryNome.destroy()
+        self.entryConfSenha.destroy() 
+
+        self.mainLbl = Label(self.tela, text="CONECTAR", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
         self.mainLbl.place(relx = 0.25,rely=0.1)
-        self.lblEmail = Label(self.conectar, text="EMAIL", font="Arial 9", bg="#cfcbcb", fg = "black")
+        self.lblEmail = Label(self.tela, text="EMAIL", font="Arial 9", bg="#cfcbcb", fg = "black")
         self.lblEmail.place(relx = 0.14, rely= 0.32)
-        self.lblSenha = Label(self.conectar, text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "black")
+        self.lblSenha = Label(self.tela, text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "black")
         self.lblSenha.place(relx = 0.14, rely= 0.47)
-        self.btnEsqSenha = Button(self.conectar, text="ESQUECI A SENHA", font="Arial 9 underline", bg="#cfcbcb", fg = "black", relief = FLAT)
+        self.btnEsqSenha = Button(self.tela, text="ESQUECI A SENHA", font="Arial 9 underline", bg="#cfcbcb", fg = "black", relief = FLAT)
         self.btnEsqSenha.place(relx = 0.14, rely= 0.6)
-        self.lblConfSenha = Label(self.conectar, text="CADASTRE-SE PARA CONTINUAR", font="Arial 9", bg="#cfcbcb", fg = "black")
-        self.lblConfSenha.place(relx = 0.22, rely= 0.2)
+        self.lblCadastrar = Label(self.tela, text="CADASTRE-SE PARA CONTINUAR", font="Arial 9", bg="#cfcbcb", fg = "black")
+        self.lblCadastrar.place(relx = 0.22, rely= 0.2)
 
-        self.entryEmail = Entry(self.conectar, relief = FLAT, font= "Helvetica 11")
+        self.entryEmail.config(relief = FLAT, font= "Helvetica 11")
         self.entryEmail.place(width=270,height=50,relx = 0.14, rely= 0.36)
-        self.entrySenha = Entry(self.conectar, relief = FLAT, font= "Helvetica 11")
+        self.entrySenha.config(relief = FLAT, font= "Helvetica 11")
         self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.5)
 
-        self.botaoConfirma = Button(self.conectar, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd")
+        self.botaoConfirma = Button(self.tela, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd")
         self.botaoConfirma.place(width=270,height=50,relx = 0.14, rely= 0.80)
-        self.conectar.mainloop()
+        self.tela.mainloop()
 
     def telaEsqSenha(self):
         self.esqSenha = Tk()
@@ -194,7 +193,7 @@ class TelaCadastroLogin:
 
 
 
-#telaself.criaConta()
+#telaself.tela()
 #telaConectar()
 #telaEsqSenha()
 #telaself.esqSenhaCodigo()
