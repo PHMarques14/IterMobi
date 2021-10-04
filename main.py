@@ -2,22 +2,32 @@ from tkinter import *
 
 class Telas:
     def __init__(self):
-        self.telaCriaConta()
+        self.telaLogo()
+        """self.telaCriaConta()
         self.telaConectar()
         self.telaEsqSenha()
         self.telaEsqSenhaCodigo()
-        self.telaEsqSenhaNova()
-        self.telaLogo()
+        self.telaEsqSenhaNova()"""
+        
 
     def telaLogo(self):
         self.tela = Tk()
-        self.tela.geometry("1280x720")
+        self.tela.geometry("375x677")
         self.tela['bg'] = "#cfcbcb"
         self.tela.title("IterMobi")
-        img = PhotoImage(file="triangulos_appMotorista.png")
+        img = PhotoImage(file="triangulos_app.png")
+        img2 = PhotoImage(file="triangulos_appUPSIDOWN.png")
+        img3 = PhotoImage(file="logoProjGrande.png")
 
         lblTri = Label(self.tela, image=img, bg="#cfcbcb")
         lblTri.place(x=-2,y=-1)
+        
+        lblTri2 = Label(self.tela, image=img2, bg="#cfcbcb")
+        lblTri2.place(x=-2,y=500)
+
+        lblLogo = Label(self.tela, image=img2, bg="#cfcbcb")
+        lblLogo.place(x=-2,y=500)
+        self.tela.mainloop()
 
         #TERMINAR CONFIGURAÇÃO DAS TELAS
 

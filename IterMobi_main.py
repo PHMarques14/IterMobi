@@ -192,7 +192,6 @@ class TelaCadastroLogin:
         self.esqSenhaNova.mainloop()
 
 
-
 #telaself.tela()
 #telaConectar()
 #telaEsqSenha()
