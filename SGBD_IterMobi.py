@@ -7,6 +7,7 @@ meucursor = conexao.cursor()
 def conecta():
     try:
         conexao = mysql.connector.connect(user = "root", host = "127.0.0.1")
+        meucursor.execute('CREATE DATABASE bd_itermobi;')
         meucursor.execute('USE bd_itermobi;')
         print('conectado')
         return conexao
@@ -33,9 +34,14 @@ def cripto(palavra):
         c = (c+f'{e}{d}')
         return c
 
-def registrar(nome, email, senha, deficiencia):
+def criaTabela():
     try:
-        meucursor.execute("INSERT INTO Usuarios(palavra) VALUES(%s, %s, %s, %s);", (nome, email, senha, deficiencia))
+        meucursor.execute('CREATE TABLE Usuarios(palavra);')
+    except:
+        print('A tabela já foi criada.')
+def registrar(nome, email, senha):
+    try:
+        meucursor.execute("INSERT INTO Usuarios(palavra) VALUES(%s, %s, %s);", (nome, email, senha))
         conexao.commit()
         print('palavra adicionada')
     except Error as err:
