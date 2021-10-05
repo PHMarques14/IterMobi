@@ -26,6 +26,8 @@ def telaSejaBV():
 
     lblPLugar = Label(lblSelec, text="Graal Resende", font="Beirut 18", bg = "#2955b6", fg = "white", anchor= "nw")
     lblPLugar.place(width=400,height=80,x= -2, y = -2)
+    lblPLugarEnder = Label(lblSelec, text="Graal Resende", font="Beirut 18", bg = "#2955b6", fg = "white", anchor= "nw")
+    lblPLugarEnder.place(width=400,height=80,x= -2, y = -2)
     lblSLugar = Label(lblSelec, text="Rodoviária Velha", font="Beirut 18", bg = "#160b7d", fg = "white", anchor= "nw")
     lblSLugar.place(width=400,height=80,x= -2, y = 78)
     lblTLugar = Label(lblSelec, text="Av. Perimetral Norte, 609", font="Beirut 18", bg = "#6585cd", fg = "white", anchor= "nw")
