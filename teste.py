@@ -81,16 +81,16 @@ def escolhaOnibus(self):
     self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
     self.lblBusca = Label( self.tela, bg = "#00226d")
     self.lblBusca.place(width=400,height=66,relx = 0, rely= 0.12)
-    self.entryBusca = Entry( lblBusca, relief = FLAT, font= "Helvetica 14")
+    self.entryBusca = Entry( self.lblBusca, relief = FLAT, font= "Helvetica 14")
     self.entryBusca.place(width=309,height=54,relx = 0.01, rely= 0.05)
 
     self.img = PhotoImage(file="mic.png")
     self.img2 = PhotoImage(file="iconeSeta.png")
 
-    self.lblSeta = Label( self.tela, image= img2, bg = "#6585cd")
+    self.lblSeta = Label( self.tela, image= self.img2, bg = "#6585cd")
     self.lblSeta.place(width=50,height=50 ,x=5,y=20)
 
-    self.lblMic = Label( self.tela, image= img)
+    self.lblMic = Label( self.tela, image= self.img)
     self.lblMic.place(x=315,y=86)
 
     self.lblNumOnibus1 = Button( self.tela, text="280", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
@@ -119,3 +119,34 @@ def escolhaOnibus(self):
 
     self.lblNumOnibus9 = Button( self.tela, text="311", font="Beirut 18", bg = "#6585cd", fg = "black", relief=FLAT)
     self.lblNumOnibus9.place(width=400,height=60,x= -2, y = 615)
+
+def telaChamaMoto(self):
+    self.tela = Tk()
+    self.tela.geometry("375x677")
+    self.tela['bg'] = "#cfcbcb"
+    self.tela.title("IterMobi")
+
+    self.entryBusca = Entry( self.tela, relief = FLAT, font= "Helvetica 14")
+    self.entryBusca.place(width=259,height=54,relx = 0.15, rely= 0.05)
+
+    self.img = PhotoImage(file="mic.png")
+    self.img2 = PhotoImage(file="iconeSeta.png")
+
+    self.lblSeta = Label( self.tela, image= self.img2, bg = "white")
+    self.lblSeta.place(width=50,height=54 ,relx=0.015,rely=0.05)
+
+    self.lblMic = Label(self.tela, image= self.img)
+    self.lblMic.place(relx=0.84,rely=0.05)
+
+    self.btnAlertaMoto = Button( self.tela, text="Alertar motorista", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
+    self.btnAlertaMoto.place(width=400,height=60,x= -2, y = 455)
+
+    self.lblPLugar = Label(self.tela, text="Graal Resende", font="Beirut 18", bg = "#ededed", fg = "black", anchor= "nw")
+    self.lblPLugar.place(width=400,height=80,x= -2, y = 517)
+    self.lblPLugarEnder = Label(self.tela, text="Rodovia Presidente Dutra, Paraíso", font="Beirut 12", bg = "#ededed", fg = "#30343F", anchor= "w")
+    self.lblPLugarEnder.place(x= -2, y = 557)
+
+    self.lblLinha = Label(self.tela, text="Ônibus selecionado:", font="Beirut 18", bg = "#ededed", fg = "black", anchor= "nw")
+    self.lblLinha.place(width=400,height=80,x= -2, y = 600)
+    self.lblnumLinha = Label(self.tela, text="280", font="Beirut 40", bg = "#ededed", fg = "#30343F")
+    self.lblnumLinha.place(x= 260, y = 600)
