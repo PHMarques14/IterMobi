@@ -13,7 +13,7 @@ def telaSejaBV(self):
     self.entryBusca = Entry(self.lblBusca, relief = FLAT, font= "Helvetica 14")
     self.entryBusca.place(width=309,height=54,relx = 0.01, rely= 0.05)
 
-    self.img = PhotoImage(file="iconeMic.png")
+    self.img = PhotoImage(file=" mic.png")
 
     self.lblMic = Label(self.tela, image=self.img)
     self.lblMic.place(x=315,y=86)
@@ -52,7 +52,7 @@ def telaBusca():
     self.entryBusca = Entry(self.lblBusca, relief = FLAT, font= "Helvetica 14")
     self.entryBusca.place(width=309,height=54,relx = 0.01, rely= 0.05)
 
-    self.img = PhotoImage(file="iconeMic.png")
+    self.img = PhotoImage(file=" mic.png")
     self.img2 = PhotoImage(file="iconeSeta.png")
 
     self.lblSeta = Label(self.tela, image=self.img2, bg = "#6585cd")
@@ -70,3 +70,52 @@ def telaBusca():
     self.lblSLugar.place(width=400,height=80,x= -2, y = 227)
     self.lblSLugarEnder = Label(self.tela, text="Rod. Pres. Dutra, Fazenda da Barra", font="Beirut 12", bg = "#ededed", fg = "#30343F", anchor= "w")
     self.lblSLugarEnder.place(x= -2, y = 267)
+
+def escolhaOnibus():
+    self.tela = Tk()
+    self.tela.geometry("375x677")
+    self.tela['bg'] = "#cfcbcb"
+    self.tela.title("IterMobi")
+
+    self.mainLbl = Label( self.tela, text="Escolha o ônibus", font="Beirut 24 bold", bg = "#6585cd", fg = "white")
+    self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
+    self.lblBusca = Label( self.tela, bg = "#00226d")
+    self.lblBusca.place(width=400,height=66,relx = 0, rely= 0.12)
+    self.entryBusca = Entry( lblBusca, relief = FLAT, font= "Helvetica 14")
+    self.entryBusca.place(width=309,height=54,relx = 0.01, rely= 0.05)
+
+    self.img = PhotoImage(file="mic.png")
+    self.img2 = PhotoImage(file="iconeSeta.png")
+
+    self.lblSeta = Label( self.tela, image= img2, bg = "#6585cd")
+    self.lblSeta.place(width=50,height=50 ,x=5,y=20)
+
+    self.lblMic = Label( self.tela, image= img)
+    self.lblMic.place(x=315,y=86)
+
+    self.lblNumOnibus1 = Button( self.tela, text="280", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
+    self.lblNumOnibus1.place(width=400,height=60,x= -2, y = 145)
+
+    self.lblNumOnibus2 = Button( self.tela, text="371", font="Beirut 18", bg = "#160b7d", fg = "black", relief=FLAT)
+    self.lblNumOnibus2.place(width=400,height=60,x= -2, y = 204)
+
+    self.lblNumOnibus3 = Button( self.tela, text="175", font="Beirut 18", bg = "#6585cd", fg = "black", relief=FLAT)
+    self.lblNumOnibus3.place(width=400,height=60,x= -2, y = 264)
+
+    self.lblNumOnibus4 = Button( self.tela, text="285", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
+    self.lblNumOnibus4.place(width=400,height=60,x= -2, y = 324)
+
+    self.lblNumOnibus5 = Button( self.tela, text="372", font="Beirut 18", bg = "#160b7d", fg = "black", relief=FLAT)
+    self.lblNumOnibus5.place(width=400,height=60,x= -2, y = 384)
+
+    self.lblNumOnibus6 = Button( self.tela, text="312", font="Beirut 18", bg = "#6585cd", fg = "black", relief=FLAT)
+    self.lblNumOnibus6.place(width=400,height=60,x= -2, y = 440)
+
+    self.lblNumOnibus7 = Button(self.tela, text="164", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
+    self.lblNumOnibus7.place(width=400,height=60,x= -2, y = 495)
+
+    self.lblNumOnibus8 = Button( self.tela, text="145", font="Beirut 18", bg = "#160b7d", fg = "black", relief=FLAT)
+    self.lblNumOnibus8.place(width=400,height=60,x= -2, y = 555)
+
+    self.lblNumOnibus9 = Button( self.tela, text="311", font="Beirut 18", bg = "#6585cd", fg = "black", relief=FLAT)
+    self.lblNumOnibus9.place(width=400,height=60,x= -2, y = 615)
