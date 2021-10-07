@@ -39,7 +39,7 @@ def telaSejaBV(self):
     self.lblTLugarEnder = Label(self.lblSelec, text="Av. Perimetral Norte, 609, Cidade Alegria", font="Beirut 12", bg = "#6585cd", fg = "#bababa", anchor= "w")
     self.lblTLugarEnder.place(x= -2, y = 200)
     
-def telaBusca():
+def telaBusca(self):
     self.tela = Tk()
     self.tela.geometry("375x677")
     self.tela['bg'] = "#cfcbcb"
@@ -71,7 +71,7 @@ def telaBusca():
     self.lblSLugarEnder = Label(self.tela, text="Rod. Pres. Dutra, Fazenda da Barra", font="Beirut 12", bg = "#ededed", fg = "#30343F", anchor= "w")
     self.lblSLugarEnder.place(x= -2, y = 267)
 
-def escolhaOnibus():
+def escolhaOnibus(self):
     self.tela = Tk()
     self.tela.geometry("375x677")
     self.tela['bg'] = "#cfcbcb"
