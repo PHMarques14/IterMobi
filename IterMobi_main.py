@@ -1,4 +1,3 @@
-import functools
 import os
 from SGBD_IterMobi import *
 from tkinter import *
@@ -9,21 +8,39 @@ from pygame import mixer, time
 from validate_email import validate_email
 from random import randint
 
+useBanco()
+
 class Usuario:
     def __init__(self, nome, email, __senha):
         self.nome = nome
         self.email = email
         self.__senha = __senha
+
+        self.cadastrar()
     
     def cadastrar(self):
-        self.__senha = cripto(self.__senha)
+        c = ''
+        for p in self.__senha:
+            e = ord(p)
 
-        r = registrar(self.nome, self.email, self.__senha)
+            if e % 2 == 0:
+                d = f'{chr(e)}{chr(e-1)}'
+                e = e//2
+            else:
+                if e == 33:
+                    d = f'{chr(e)}{chr(e+1)}'
+                    e *= 2
+                else:
+                    d = f'{chr(e)}{chr(e+1)}'
+                    e *= 2
 
-        if r == 1:
-            pass
-        else:
-            pass
+            c = (c+f'{e}{d}')
+        print(c)
+
+        try:
+            registrar(self.nome, self.email, c)
+        except:
+            return 1
 
 class CadastroLogin:
     def __init__(self, nome, email, __senha):
@@ -39,6 +56,7 @@ class CadastroLogin:
         self.img2 = PhotoImage(file="logoProjGrande.png")
         self.img3 = PhotoImage(file="mic.png")
         self.img4 = PhotoImage(file="seta.png")
+        self.img5 = PhotoImage(file="olho.png")
 
         self.lblLogo = Label(self.tela, image=self.img2, bg="#cfcbcb")        
         self.lblLogo.place(relx=0.25, rely=0.4)
@@ -50,6 +68,10 @@ class CadastroLogin:
         '''Tela de cadastro do aplicativo'''
         self.lblLogo.destroy()
         try:
+            self.lblAviso.destroy()
+        except:
+            pass
+        try:
             self.btnEsqSenha.destroy()
             self.btnConfirma.destroy()
             self.btnCadastroLogin.destroy()
@@ -58,7 +80,8 @@ class CadastroLogin:
             self.lblSenha.destroy()
             self.entryEmail.destroy()
             self.entrySenha.destroy()
-
+            self.btnVer1.destroy()
+            self.btnVer2.destroy()
         except:
             pass
         
@@ -68,26 +91,34 @@ class CadastroLogin:
         self.mainLbl = Label(self.tela, text="CRIE SUA CONTA", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
         self.mainLbl.place(relx = 0.14,rely=0.1)
         self.lblNome = Label(self.tela, text="NOME", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
-        self.lblNome.place(relx = 0.14, rely= 0.2)
+        self.lblNome.place(relx = 0.14, rely= 0.18)
         self.lblEmail = Label(self.tela, text="EMAIL", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
-        self.lblEmail.place(relx = 0.14, rely= 0.35)
+        self.lblEmail.place(relx = 0.14, rely= 0.32)
         self.lblSenha = Label(self.tela, text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
-        self.lblSenha.place(relx = 0.14, rely= 0.5)
+        self.lblSenha.place(relx = 0.14, rely= 0.45)
         self.lblConfSenha = Label(self.tela, text="CONFIRMAR SENHA", font="Arial 9", bg="#cfcbcb", fg = "#00226d")
-        self.lblConfSenha.place(relx = 0.14, rely= 0.65)
+        self.lblConfSenha.place(relx = 0.14, rely= 0.58)
 
         self.entryNome = Entry(self.tela, relief = FLAT, font= "Helvetica 14")
         self.entryNome.place(width=270,height=50,relx = 0.14, rely= 0.23)
         self.entryNome.focus_set()
         self.entryEmail = Entry(self.tela, relief = FLAT, font= "Helvetica 14")
-        self.entryEmail.place(width=270,height=50,relx = 0.14, rely= 0.38)
+        self.entryEmail.place(width=270,height=50,relx = 0.14, rely= 0.36)
         self.entrySenha = Entry(self.tela, relief = FLAT, font= "Helvetica 14")
-        self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.53)
+        self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.49)
         self.entrySenha.config(show='*')
         self.entryConfSenha = Entry(self.tela, relief = FLAT, font= "Helvetica 14")
-        self.entryConfSenha.place(width=270,height=50,relx = 0.14, rely= 0.68)
+        self.entryConfSenha.place(width=270,height=50,relx = 0.14, rely= 0.62)
         self.entryConfSenha.config(show='*')
-        self.btnConfirma = Button(self.tela, text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=lambda: self.home(0))
+        self.btnVer1 = Label(self.tela, image=self.img5, bg='white')
+        self.btnVer1.bind('<Button-1>', lambda event, arg='ver1': self.acao(event, arg))
+        self.btnVer1.bind('<ButtonRelease-1>', lambda event, arg='esc1': self.acao(event, arg))
+        self.btnVer1.place(relx= 0.745, rely=0.49)
+        self.btnVer2 = Label(self.tela, image=self.img5, bg='white')
+        self.btnVer2.bind('<Button-1>', lambda event, arg='ver2': self.acao(event, arg))
+        self.btnVer2.bind('<ButtonRelease-1>', lambda event, arg='esc2': self.acao(event, arg))
+        self.btnVer2.place(relx=0.745, rely=0.62)
+        self.btnConfirma = Button(self.tela, text="CADASTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=lambda: self.home(0))
         self.btnConfirma.place(width=270,height=50,relx = 0.14, rely= 0.80)
         self.btnCadastroLogin = Label(self.tela, text="JÁ TEM CADASTRO? CLIQUE AQUI", font="Arial 9 underline", bg="#cfcbcb", fg = "#000", relief = FLAT)
         self.btnCadastroLogin.place(relx = 0.23, rely= 0.90)
@@ -95,10 +126,15 @@ class CadastroLogin:
 
     def login(self, event):
         '''Tela de login do aplicativo'''
+        try:
+            self.lblAviso.destroy()
+        except:
+            pass
         self.lblNome.destroy()
         self.entryNome.destroy()
         self.lblConfSenha.destroy()
         self.entryConfSenha.destroy()
+        self.btnVer2.destroy()
 
         self.mainLbl.config(text="CONECTAR", font="Helvetica 23 bold", bg = "#cfcbcb", fg = "#00226d")
         self.mainLbl.place(relx = 0.25,rely=0.1)
@@ -107,7 +143,7 @@ class CadastroLogin:
         self.lblSenha.config(text="SENHA", font="Arial 9", bg="#cfcbcb", fg = "black")
         self.lblSenha.place(relx = 0.14, rely= 0.47)
         self.btnEsqSenha = Label(self.tela, text="ESQUECI A SENHA", font="Arial 9 underline", bg="#cfcbcb", fg = "black", relief = FLAT)
-        self.btnEsqSenha.place(relx = 0.14, rely= 0.6)
+        self.btnEsqSenha.place(relx = 0.14, rely= 0.58)
         self.btnEsqSenha.bind('<Button-1>', self.esqueceuSenha)
         self.btnCadastroLogin.config(text="CADASTRE-SE PARA CONTINUAR", font="Arial 9 underline", bg="#cfcbcb", fg = "black")
         self.btnCadastroLogin.place(relx = 0.14, rely= 0.8)
@@ -119,7 +155,9 @@ class CadastroLogin:
         self.entrySenha.config(relief = FLAT, font= "Helvetica 14")
         self.entrySenha.config(show='*')
         self.entrySenha.place(width=270,height=50,relx = 0.14, rely= 0.5)
-        self.entrySenha.bind('<Return>', self.home)
+        self.entrySenha.bind('<Return>', lambda event: self.home(1))
+
+        self.btnVer1.place(relx=0.745, rely=0.5)
 
         self.btnConfirma.config(text="ENTRAR", font="Arial 11 bold", bg="#00226d", fg = "#fff",relief = FLAT, activebackground="#6585cd", command=lambda: self.home(1))
         self.btnConfirma.place(width=270,height=50,relx = 0.14, rely= 0.7)
@@ -235,18 +273,18 @@ PARA O EMAIL INFORMADO ABAIXO"""
             self.entryEmail.config(fg='red')
             self.entryEmail.delete(0, END)
             self.entryEmail.insert(0, 'Digite um email!')
-            self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-            self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))        
+            self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+            self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))        
 
     def home(self, event):
         if event == 0:
             self.nome = self.entryNome.get()
             self.email = self.entryEmail.get()
-            self.senha = self.entrySenha.get()
+            self.__senha = self.entrySenha.get()
             self.confSenha = self.entryConfSenha.get()
 
-            if self.nome == '' or self.email == '' or self.senha == '' or self.confSenha == '':
-                if self.nome == '' and self.email == '' and self.senha == '' and self.confSenha == '':
+            if self.nome == '' or self.email == '' or self.__senha == '' or self.confSenha == '':
+                if self.nome == '' and self.email == '' and self.__senha == '' and self.confSenha == '':
                     self.entryNome.config(fg='red')
                     self.entryEmail.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
@@ -257,17 +295,17 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entrySenha.insert(0, 'Digite uma senha!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.nome == '' and self.email == '' and self.senha == '':
+                elif self.nome == '' and self.email == '' and self.__senha == '':
                     self.entryNome.config(fg='red')
                     self.entryEmail.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
@@ -276,13 +314,13 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entryEmail.insert(0, 'Digite um email!')
                     self.entrySenha.insert(0, 'Digite uma senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.nome == '' and self.email == '' and self.confSenha == '':
                     self.entryNome.config(fg='red')
@@ -293,15 +331,15 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entryEmail.insert(0, 'Digite um email!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.nome == '' and self.senha == '' and self.confSenha == '':
+                elif self.nome == '' and self.__senha == '' and self.confSenha == '':
                     self.entryNome.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
                     self.entryConfSenha.config(fg='red', show='')
@@ -310,15 +348,15 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entrySenha.insert(0, 'Digite uma senha!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.email == '' and self.senha == '' and self.confSenha == '':
+                elif self.email == '' and self.__senha == '' and self.confSenha == '':
                     self.entryEmail.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
                     self.entryConfSenha.config(fg='red', show='')
@@ -327,13 +365,13 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entrySenha.insert(0, 'Digite uma senha!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
                 elif self.nome == '' and self.email == '':
                     self.entryNome.config(fg='red')
@@ -342,24 +380,24 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entryNome.insert(0, 'Digite seu nome!')
                     self.entryEmail.insert(0, 'Digite um email!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
                     None
-                elif self.nome == '' and self.senha == '':
+                elif self.nome == '' and self.__senha == '':
                     self.entryNome.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
 
                     self.entryNome.insert(0, 'Digite seu nome!')
                     self.entrySenha.insert(0, 'Digite uma senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.nome == '' and self.confSenha == '':
                     self.entryNome.config(fg='red')
@@ -368,24 +406,24 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entryNome.insert(0, 'Digite seu nome!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.email == '' and self.senha == '':
+                elif self.email == '' and self.__senha == '':
                     self.entryEmail.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
 
                     self.entryEmail.insert(0, 'Digite um email!')
                     self.entrySenha.insert(0, 'Digite uma senha!')
 
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
 
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.email == '' and self.confSenha == '':
                     self.entryNome.config(fg='red')
@@ -394,141 +432,203 @@ PARA O EMAIL INFORMADO ABAIXO"""
                     self.entryNome.insert(0, 'Digite seu nome!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.senha == '' and self.confSenha == '':
+                elif self.__senha == '' and self.confSenha == '':
                     self.entrySenha.config(fg='red', show='')
                     self.entryConfSenha.config(fg='red', show='')
 
                     self.entrySenha.insert(0, 'Digite uma senha!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
                 elif self.nome == '':
                     self.entryNome.config(fg='red')
                     self.entryNome.insert(0, 'Digite seu nome!')
-                    self.entryNome.bind('<Button>', lambda event, arg=0: self.destruir(event, arg))
-                    self.entryNome.bind('<Key>', lambda event, arg=0: self.destruir(event, arg))
+                    self.entryNome.bind('<Button-1>', lambda event, arg=0: self.acao(event, arg))
+                    self.entryNome.bind('<Key>', lambda event, arg=0: self.acao(event, arg))
                     None
                 elif self.email == '':
                     self.entryEmail.config(fg='red')
                     self.entryEmail.insert(0, 'Digite um email!')
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
                     None
-                elif self.senha == '':
+                elif self.__senha == '':
                     self.entrySenha.config(fg='red', show='')
                     self.entrySenha.insert(0, 'Digite uma senha!')
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.confSenha == '':
                     self.entryConfSenha.config(fg='red', show='')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-            elif self.nome == 'Digite seu nome!' or self.email == 'Digite um email!' or self.senha == 'Digite uma senha!' or self.confSenha == 'Repita a senha!':
+            elif self.nome == 'Digite seu nome!' or self.email == 'Digite um email!' or self.__senha == 'Digite uma senha!' or self.confSenha == 'Repita a senha!':
                 None
             else:
                 pass
         elif event == 1:
             self.email = self.entryEmail.get()
-            self.senha = self.entrySenha.get()
-            if self.email == '' or self.senha == '':
-                if self.email == '' and self.senha == '':
+            self.__senha = self.entrySenha.get()
+            if self.email == '' or self.__senha == '':
+                if self.email == '' and self.__senha == '':
                     self.entryEmail.config(fg='red')
                     self.entrySenha.config(fg='red', show='')
 
                     self.entryEmail.insert(0, 'Digite um email!')
                     self.entrySenha.insert(0, 'Digite uma senha!')
 
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
 
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.email == '':
                     self.entryEmail.config(fg='red')
                     self.entryEmail.insert(0, 'Digite um email!')
-                    self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
+                    self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                    self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
                     None
-                elif self.senha == '':
+                elif self.__senha == '':
                     self.entrySenha.config(fg='red', show='')
                     self.entrySenha.insert(0, 'Digite uma senha!')
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
-            elif self.email == 'Digite um email!' or self.senha == 'Digite uma senha!':
+            elif self.email == 'Digite um email!' or self.__senha == 'Digite uma senha!':
                 None
             else:
                 pass
         elif event == 2:
-            self.senha = self.entrySenha.get()
+            self.__senha = self.entrySenha.get()
             self.confSenha = self.entryRepeteSenha.get()
-            if self.senha == '' or self.confSenha == '':
-                if self.senha == '' and self.confSenha == '':
+            if self.__senha == '' or self.confSenha == '':
+                if self.__senha == '' and self.confSenha == '':
                     self.entrySenha.config(fg='red', show='')
                     self.entryConfSenha.config(fg='red', show='')
 
                     self.entrySenha.insert(0, 'Digite uma senha!')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
 
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
 
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-                elif self.senha == '':
+                elif self.__senha == '':
                     self.entrySenha.config(fg='red', show='')
                     self.entrySenha.insert(0, 'Digite uma senha!')
-                    self.entrySenha.bind('<Button>', lambda event, arg=2: self.destruir(event, arg))
-                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.destruir(event, arg))
+                    self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                    self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
                     None
                 elif self.confSenha == '':
                     self.entryConfSenha.config(fg='red', show='')
                     self.entryConfSenha.insert(0, 'Repita a senha!')
-                    self.entryConfSenha.bind('<Button>', lambda event, arg=3: self.destruir(event, arg))
-                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.destruir(event, arg))
+                    self.entryConfSenha.bind('<Button-1>', lambda event, arg=3: self.acao(event, arg))
+                    self.entryConfSenha.bind('<Key>', lambda event, arg=3: self.acao(event, arg))
                     None
-            elif self.senha == 'Digite uma senha!' or self.confSenha == 'Repita a senha!':
+            elif self.__senha == 'Digite uma senha!' or self.confSenha == 'Repita a senha!':
                 None
             else:
                 verificar = 1
                 pass
-        try:
+
+        if event == 0:
             self.emailUsuario = self.entryEmail.get()
             verificar = self.verificar(self.emailUsuario)
+            print('ok')
             if verificar != 1:
                 self.entryEmail.config(fg='red')
                 self.entryEmail.delete(0, END)
                 self.entryEmail.insert(0, 'Digite um email!')
-                self.entryEmail.bind('<Button>', lambda event, arg=1: self.destruir(event, arg))
-                self.entryEmail.bind('<Key>', lambda event, arg=1: self.destruir(event, arg))
+                self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))
                 pass
             else:
+                print('verificado')
+                cad = verificarConta(self.emailUsuario)
+                print(cad)
+                if cad == '':
+                    if self.__senha < 8:
+                        self.entrySenha.config(fg='red', show='', font='Helvetica 11')
+                        self.entrySenha.delete(0, END)
+                        self.entrySenha.insert(0, 'A senha deve conter pelo menos 8 caracteres!')
+                        self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                        self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                        pass
+                    else:
+                        if self.confSenha != self.__senha or self.__senha != self.confSenha:
+                            self.entryConfSenha.config(fg='red', show='', font='Helvetica 12')
+                            self.entryConfSenha.delete(0, END)
+                            self.entryConfSenha.insert(0, 'Confirmação incorreta!')
+                            self.entryConfSenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                            self.entryConfSenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                            pass
+                        else:
+                            Usuario(self.nome, self.email, self.__senha)
+                else:
+                    print('ok2')
+                    self.lblAviso = Label(self.tela, text='''Essa conta já está cadastrada.
+Entre embaixo de CADASTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
+                    self.lblAviso.place(relx=0.12, rely=0.71)
+                    t = Timer(4, lambda: self.acao(0, 'aviso'))
+                    t.start()
+                    verificar = 0
+                    None
+        elif event == 1:
+            verificar = self.verificar(self.email)
+            if verificar != 1:
+                self.entryEmail.config(fg='red')
+                self.entryEmail.delete(0, END)
+                self.entryEmail.insert(0, 'Digite um email!')
+                self.entryEmail.bind('<Button-1>', lambda event, arg=1: self.acao(event, arg))
+                self.entryEmail.bind('<Key>', lambda event, arg=1: self.acao(event, arg))    
                 pass
+            else:
+                vc = verificarConta(self.email)
+                if vc == '':
+                    print('pq')
+                    self.lblAviso = Label(self.tela, text='''Essa conta não existe.
+Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
+                    self.lblAviso.place(relx=0.146, rely=0.62)
+                    t = Timer(4, lambda: self.acao(0, 'aviso'))
+                    t.start()
+                    verificar = 0
+                    None
+                else:
+                    vs = verificarSenha(self.email, self.__senha)
+                    if vs == 1:
+                        self.entrySenha.config(fg='red', show='')
+                        self.entrySenha.delete(0, END)
+                        self.entrySenha.insert(0, 'Senha incorreta!')
+                        self.entrySenha.bind('<Button-1>', lambda event, arg=2: self.acao(event, arg))
+                        self.entrySenha.bind('<Key>', lambda event, arg=2: self.acao(event, arg))
+                        print('é igual a 1')
+                        verificar = 0
+                        None
+                    elif vs == 0:
+                        print('ok')
+                        pass
+        
+        try:
+            self.lblSeta.destroy()
+            self.lblOnibus.destroy()
         except:
-            try:
-                self.lblSeta.destroy()
-                self.lblNumOnibus1.destroy()
-                self.lblNumOnibus2.destroy()
-                self.lblNumOnibus3.destroy()
-                self.lblNumOnibus4.destroy()
-            except:
-                pass
+            pass
         if verificar == 0:
             None
         else:
@@ -551,6 +651,7 @@ PARA O EMAIL INFORMADO ABAIXO"""
                 self.lblSenha.destroy()
                 self.entryEmail.destroy()
                 self.entrySenha.destroy()
+                self.btnEsqSenha.destroy()
             elif event == 2:
                 self.lblSenha.destroy()
                 self.entrySenha.destroy()
@@ -569,7 +670,7 @@ PARA O EMAIL INFORMADO ABAIXO"""
             self.entryEmail.destroy()
             self.entrySenha.destroy()
 
-            self.mainLbl.config(text="Seja bem-vindo!", font="Beirut 28", bg = "#cfcbcb", fg = "#30343F")
+            self.mainLbl.config(text="IterMo", font="Beirut 28", bg = "#cfcbcb", fg = "#30343F")
             self.mainLbl.place(relx = 0.02,rely=0.03)
 
             self.lblBusca = Label(self.tela, bg = "#00226d")
@@ -584,16 +685,6 @@ PARA O EMAIL INFORMADO ABAIXO"""
 
             self.lblLugRec = Label(self.tela, text="Linhas recentes:", font="Beirut 18", bg = "#cfcbcb", fg = "#5E5E5E")
             self.lblLugRec.place(relx = 0.02, rely=0.34)
-            
-            self.lblSelec = Label(self.tela)
-            self.lblSelec.place(width=400,height=240,relx = 0, rely=0.4)
-
-            self.lblPLugarEnder = Label(self.lblSelec, text="280-Cid. Alegria X Paraiso", font="Beirut 18", bg = "#2955b6", fg = "white", anchor= "nw")
-            self.lblPLugarEnder.place(width=400,height=80,x= -2, y = -2)
-            self.lblSLugar = Label(self.lblSelec, text="135-Primavera X Rodoviária", font="Beirut 18", bg = "#160b7d", fg = "white", anchor= "nw")
-            self.lblSLugar.place(width=400,height=80,x= -2, y = 78)
-            self.lblTLugar = Label(self.lblSelec, text="372-Faz. da Barra 3", font="Beirut 18", bg = "#6585cd", fg = "white", anchor= "nw")
-            self.lblTLugar.place(width=400,height=80,x= -2, y = 158)
     
     def escolha(self, event):
         try:
@@ -607,39 +698,30 @@ PARA O EMAIL INFORMADO ABAIXO"""
             pass
         self.lblLugRec.destroy()
         self.lblSelec.destroy()
-        self.lblPLugarEnder.destroy()
-        self.lblSLugar.destroy()
-        self.lblTLugar.destroy()
+        self.n = self.entryBusca.get()
+        self.lbl = procurar(self.n)
 
-        n = self.entryBusca.get()
+        self.mainLbl.config(text="Escolha o ônibus", font="Beirut 24 bold", bg = "#6585cd", fg = "white")
+        self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
 
-        if n == '372' or event == '372':
-            self.mainLbl.config(text="Escolha o ônibus", font="Beirut 24 bold", bg = "#6585cd", fg = "white")
-            self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
-
-            self.lblSeta = Button(self.tela, image= self.img4, bg = "#6585cd", relief=FLAT, activebackground="#6585cd", command=lambda:self.home(3))
-            self.lblSeta.place(width=50,height=50 ,x=5,y=20)
-
-            self.lblNumOnibus1 = Button( self.tela, text="372-Primavera via Itapuca", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT, command=lambda: self.notificar(0))
-            self.lblNumOnibus1.place(width=400,height=60,x= -2, y = 145)
-
-            self.lblNumOnibus2 = Button( self.tela, text="372-Parque Minas Gerais", font="Beirut 18", bg = "#160b7d", fg = "black", relief=FLAT)
-            self.lblNumOnibus2.place(width=400,height=60,x= -2, y = 204)
-
-            self.lblNumOnibus3 = Button( self.tela, text="372-Rodoviária / Faz. Barra 3", font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT)
-            self.lblNumOnibus3.place(width=400,height=60,x= -2, y = 264)
-
-            self.lblNumOnibus4 = Button( self.tela, text="372-Rodoviária / Primavera", font="Beirut 18", bg = "#160b7d", fg = "black", relief=FLAT)
-            self.lblNumOnibus4.place(width=400,height=60,x= -2, y = 324)
-        else:
-            None
+        self.lblSeta = Button(self.tela, image= self.img4, bg = "#6585cd", relief=FLAT, activebackground="#6585cd", command=lambda:self.home(3))
+        self.lblSeta.place(width=50,height=50 ,x=5,y=20)
+        self.criarEscolhas()
+    def criarEscolhas(self):
+        self.quant = 0
+        pos = 0
+        for i in self.lbl:
+            self.lblOnibus = Button( self.tela, text=i, font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT, command=lambda: self.notificar(i))
+            self.lblOnibus.place(width=400,height=60,x= -2, y = pos+145)
+            pos += 60
+            self.quant += 1
     def notificar(self, event):
-        self.entryBusca.config(text='372')
+        self.entryBusca.config(text=self.n)
         self.lblSeta.config(command=lambda:self.escolha(0))
         self.btnAlertaMoto = Button( self.tela, text="Alertar motorista!", font="Beirut 18", bg = "red", fg = "black", relief=FLAT, command=self.enviar)
         self.btnAlertaMoto.place(width=400,height=60,x= -2, y = 455)
 
-        self.lblPLugar = Label(self.tela, text="Linha: Primavera via Itapuca", font="Beirut 18", bg = "#ededed", fg = "black", anchor= "nw")
+        self.lblPLugar = Label(self.tela, text=f"Linha: {event}", font="Beirut 18", bg = "#ededed", fg = "black", anchor= "nw")
         self.lblPLugar.place(width=400,height=80,x= -2, y = 517)
         self.lblPLugarEnder = Label(self.tela, text="Local: Graal Resende", font="Beirut 12", bg = "#ededed", fg = "#30343F", anchor= "w")
         self.lblPLugarEnder.place(x= -2, y = 557)
@@ -650,30 +732,49 @@ PARA O EMAIL INFORMADO ABAIXO"""
         self.lblnumLinha.place(x= 260, y = 600)
     def enviar(self):
         noti = open('noti.txt', 'w+')
-        noti.write(self.nome)
+        noti.write(self.email)
         noti.write('\n-22.458704, -44.441193')
         
-    def destruir(self, event, arg):
+    def acao(self, event, arg):
         if arg == 0:
             self.entryNome.config(fg='black')
             self.entryNome.delete(0, END)
-            self.entryNome.unbind('<Key>', None)
-            self.entryNome.unbind('Button-1', None)
+            self.entryNome.unbind('<Key>')
+            self.entryNome.unbind('Button-1')
         elif arg == 1:
             self.entryEmail.config(fg='black')
             self.entryEmail.delete(0, END)
-            self.entryEmail.unbind('<Key>', None)
-            self.entryEmail.unbind('<Button-1>', None)
+            self.entryEmail.unbind('<Key>')
+            self.entryEmail.unbind('<Button-1>')
         elif arg == 2:
-            self.entrySenha.config(fg='black')
+            self.entrySenha.config(fg='black', show='*', font='Helvetica 14')
             self.entrySenha.delete(0, END)
-            self.entrySenha.unbind('<Key>', None)
-            self.entrySenha.unbind('<Button-1>', None)
-        else:
-            self.entryConfSenha.config(fg='black')
+            self.entrySenha.unbind('<Key>')
+            self.entrySenha.unbind('<Button-1>')
+        elif arg == 3:
+            self.entryConfSenha.config(fg='black', show='*')
             self.entryConfSenha.delete(0, END)
-            self.entryConfSenha.unbind('<Key>', None)
-            self.entryConfSenha.unbind('<Button-1>', None)
+            self.entryConfSenha.unbind('<Key>')
+            self.entryConfSenha.unbind('<Button-1>')
+        elif arg == 'aviso':
+            self.lblAviso.destroy()
+        elif arg == 'ver1':
+            self.btnVer1.config(bg='#cfcbcb')
+            self.entrySenha.config(show='')
+            self.entrySenha.unbind('<ButtonRelease-1>')
+        elif arg == 'ver2':
+            self.btnVer2.config(bg='#cfcbcb')
+            self.entryConfSenha.config(show='')
+            self.entryConfSenha.unbind('<ButtonRelease-1>')
+        elif arg == 'esc1':
+            self.btnVer1.config(bg='white')
+            self.entrySenha.config(show='*')
+            self.entrySenha.unbind('<Button-1>')
+        else:
+            self.btnVer2.config(bg='white')
+            self.entryConfSenha.config(show='*')
+            self.entryConfSenha.unbind('<Button-1>')
+
 
     def microfone(self, event):
         #Função para ouvir e reconhecer a fala
