@@ -552,6 +552,7 @@ PARA O EMAIL INFORMADO ABAIXO"""
             verificar = self.verificar(self.emailUsuario)
             print('ok')
             if verificar != 1:
+                print(verificar)
                 self.entryEmail.config(fg='red')
                 self.entryEmail.delete(0, END)
                 self.entryEmail.insert(0, 'Digite um email!')
@@ -583,7 +584,7 @@ PARA O EMAIL INFORMADO ABAIXO"""
                 else:
                     print('ok2')
                     self.lblAviso = Label(self.tela, text='''Essa conta já está cadastrada.
-Entre embaixo de CADASTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
+ENTRE PARA CONTINUAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
                     self.lblAviso.place(relx=0.12, rely=0.71)
                     t = Timer(4, lambda: self.acao(0, 'aviso'))
                     t.start()
@@ -603,7 +604,7 @@ Entre embaixo de CADASTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief
                 if vc == '':
                     print('pq')
                     self.lblAviso = Label(self.tela, text='''Essa conta não existe.
-Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
+CADASTRE-SE PARA CONTINUAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=GROOVE)
                     self.lblAviso.place(relx=0.146, rely=0.62)
                     t = Timer(4, lambda: self.acao(0, 'aviso'))
                     t.start()
@@ -626,7 +627,7 @@ Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=G
         
         try:
             self.lblSeta.destroy()
-            self.lblOnibus.destroy()
+            self.lblEsc.destroy()
         except:
             pass
         if verificar == 0:
@@ -644,6 +645,9 @@ Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=G
                 self.lblSenha.destroy()
                 self.entryEmail.destroy()
                 self.entrySenha.destroy()
+                self.btnVer1.destroy()
+                self.btnVer2.destroy()
+                pass
             elif event == 1:
                 self.lblTri.destroy()
                 self.lblNome.destroy()
@@ -652,25 +656,38 @@ Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=G
                 self.entryEmail.destroy()
                 self.entrySenha.destroy()
                 self.btnEsqSenha.destroy()
+                self.btnVer1.destroy()
+                pass
             elif event == 2:
                 self.lblSenha.destroy()
                 self.entrySenha.destroy()
                 self.lblRepeteSenha.destroy()
                 self.entryRepeteSenha.destroy()
-                self.btnConfirma.destroy()       
-            self.lblTri.destroy()
-            self.lblNome.destroy()
-            self.entryNome.destroy()
-            self.lblConfSenha.destroy()
-            self.entryConfSenha.destroy()
-            self.btnConfirma.destroy()
-            self.btnCadastroLogin.destroy()
-            self.lblEmail.destroy()
-            self.lblSenha.destroy()
-            self.entryEmail.destroy()
-            self.entrySenha.destroy()
-
-            self.mainLbl.config(text="IterMo", font="Beirut 28", bg = "#cfcbcb", fg = "#30343F")
+                self.btnConfirma.destroy()    
+                pass
+            else:
+                self.lblBusca.destroy()   
+                self.entryBusca.destroy()
+                self.lblMic.destroy()
+                self.lblLugRec.destroy()
+                pass
+            try:
+                self.lblTri.destroy()
+                self.mainLbl.destroy()
+                self.lblNome.destroy()
+                self.entryNome.destroy()
+                self.lblConfSenha.destroy()
+                self.entryConfSenha.destroy()
+                self.btnConfirma.destroy()
+                self.btnCadastroLogin.destroy()
+                self.lblEmail.destroy()
+                self.lblSenha.destroy()
+                self.entryEmail.destroy()
+                self.entrySenha.destroy()
+            except:
+                pass
+            
+            self.mainLbl = Label(text="IterMobi", font="Beirut 28", bg = "#cfcbcb", fg = "#30343F", justify=LEFT)
             self.mainLbl.place(relx = 0.02,rely=0.03)
 
             self.lblBusca = Label(self.tela, bg = "#00226d")
@@ -685,36 +702,41 @@ Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=G
 
             self.lblLugRec = Label(self.tela, text="Linhas recentes:", font="Beirut 18", bg = "#cfcbcb", fg = "#5E5E5E")
             self.lblLugRec.place(relx = 0.02, rely=0.34)
+            self.lblSeta = Button(self.tela)
     
     def escolha(self, event):
-        try:
-            self.lblSeta.destroy()
-            self.btnAlertaMoto.destroy()
-            self.lblPLugar.destroy()
-            self.lblPLugarEnder.destroy()
-            self.lblLinha.destroy()
-            self.lblnumLinha.destroy()
-        except:
-            pass
-        self.lblLugRec.destroy()
-        self.lblSelec.destroy()
         self.n = self.entryBusca.get()
         self.lbl = procurar(self.n)
+        print(self.lbl)
+        if self.lbl == 1:
+            None
+        else:
+            self.lblLugRec.destroy()
+            try:
+                self.btnAlertaMoto.destroy()
+                self.lblPLugar.destroy()
+                self.lblPLugarEnder.destroy()
+                self.lblLinha.destroy()
+                self.lblnumLinha.destroy()
+                self.lblSeta.destroy()
+            except:
+                pass
+            
+            self.mainLbl.config(text="Escolha o ônibus", font="Beirut 24 bold", bg = "#6585cd", fg = "white")
+            self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
 
-        self.mainLbl.config(text="Escolha o ônibus", font="Beirut 24 bold", bg = "#6585cd", fg = "white")
-        self.mainLbl.place(width=380,height=82,relx = 0,rely=0)
+            self.lblSeta = Button(self.tela, image= self.img4, bg = "#6585cd", relief=FLAT, activebackground="#6585cd", command=lambda:self.home(3))
+            self.lblSeta.place(width=50,height=50 ,x=5,y=20)
+            self.lblEsc = Label(self.tela)
+            self.criarEscolhas()
 
-        self.lblSeta = Button(self.tela, image= self.img4, bg = "#6585cd", relief=FLAT, activebackground="#6585cd", command=lambda:self.home(3))
-        self.lblSeta.place(width=50,height=50 ,x=5,y=20)
-        self.criarEscolhas()
     def criarEscolhas(self):
-        self.quant = 0
-        pos = 0
+        self.lblEsc.place(width=400,height=400,x= -2, y = 145)
         for i in self.lbl:
-            self.lblOnibus = Button( self.tela, text=i, font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT, command=lambda: self.notificar(i))
-            self.lblOnibus.place(width=400,height=60,x= -2, y = pos+145)
-            pos += 60
-            self.quant += 1
+            l = locTrajeto(i)
+            l = str(l)
+            self.lblOnibus = Button(self.lblEsc, width=400, text=i, font="Beirut 18", bg = "#2955b6", fg = "black", relief=FLAT, command=lambda: self.notificar(l))
+            self.lblOnibus.pack()
     def notificar(self, event):
         self.entryBusca.config(text=self.n)
         self.lblSeta.config(command=lambda:self.escolha(0))
@@ -824,8 +846,7 @@ Clique embaixo de ENTRAR.''', font='Arial 14 bold', bg='#6585cd', bd=2, relief=G
         os.remove(a)
     
     def verificar(self, email):
-        is_valid = validate_email(email,check_mx=True)
-        is_valid = validate_email(email,verify=True)
+        is_valid = validate_email(email,check_mx=True, verify=True)
 
         if is_valid == True:
             return 1

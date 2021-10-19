@@ -90,7 +90,7 @@ def procurar(onibus):
                 for x in i:
                     l.append(x)
             return l
-        except UnboundLocalError:
+        except:
             return 1
     except:
         tipo = str(onibus)
@@ -101,8 +101,19 @@ def procurar(onibus):
                 for x in i:
                     l.append(x)
             return l
-        except UnboundLocalError:
-            return 1        
+        except:
+            return 1   
+
+def locTrajeto(trajeto):
+    try:
+        meucursor.execute("SELECT trajeto FROM trajetos WHERE trajeto = '{}';".format(trajeto))
+        for i in meucursor:
+            l = []
+            for x in i:
+                l.append(x)
+        return l[0]
+    except:
+        return 1 
 
 def locNome(email):
     try:
